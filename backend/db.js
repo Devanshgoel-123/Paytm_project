@@ -29,9 +29,22 @@ const userSchema=new Schema({
         maxLength:30
     }
 })
+const accountsSchema=new Schema({
+    userId:{
+        type:mongoose.Schema.Types.ObjectId, //This made sure that only registered users balances are stored in this databases
+        ref:"User"
+    },
+    balance:{
+        type:Number,
+        required:true
+    },
+})
+
+const Account=mongoose.model("Accounts",accountsSchema);
 
 const User=mongoose.model("User",userSchema);
  module.exports={
-    User
+    User,
+    Account
  };
   
