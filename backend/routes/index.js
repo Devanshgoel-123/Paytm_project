@@ -5,5 +5,5 @@ const accountRouter=require("./accounts");
 const router=express.Router();
 
 router.use("/user",userRouter);
-router.user("/account",accountRouter);
+router.use("/account",accountRouter);
 module.exports=router;

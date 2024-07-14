@@ -1,17 +1,20 @@
 const mongoose=require("mongoose");
 const {Schema} = mongoose;
-
-
-await mongoose.connect("mongodb+srv://dgoel7146:dEmpiw-9miwxe-saqjud@paytmcluster.jhshquc.mongodb.net/")
+require('dotenv').config();
+const connect=async()=>{
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log("connected to MongoDb")
+}
+connect();
 const userSchema=new Schema({
-    userName:{
+    username:{
         type:String,
         required:true,
         lowercase:true,
         minLength:3,
         maxLength:30
     },
-    firstName:{
+    firstname:{
         type:String,
         required:true,
         trim:true,
@@ -22,7 +25,7 @@ const userSchema=new Schema({
         required:true,
         minLength:6
     },
-    lastName:{
+    lastname:{
         type:String,
         required:true,
         trim:true,

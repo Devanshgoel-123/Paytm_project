@@ -65,6 +65,7 @@ const userSchema=z.object({
 
 router.post("/signup",async (req,res)=>{
     const body=req.body;
+    console.log(body)
     const {success}=userSchema.safeParse(body);
     if(!success){
         return res.status(411).json({
