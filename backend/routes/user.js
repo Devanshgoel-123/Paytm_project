@@ -65,21 +65,23 @@ const userSchema=z.object({
 
 router.post("/signup",async (req,res)=>{
     const body=req.body;
-    console.log(body)
+    console.log(body);
     const {success}=userSchema.safeParse(body);
     if(!success){
         return res.status(411).json({
             message:"Incorrect Inputs"
         })
     }
-    const user=User.findOne({username:body.username});
-    if(user._id){
+    const user= await User.findOne({username:body.username});
+    console.log(user);
+    if(user!=null){
         return res.json({
             message:"Username already taken"
         })
     } 
     const dbUser=await User.create(body);
     const token=jwt.sign({userId:dbUser._id},JWT_SECRET);
+    console.log(token)
     await Account.create({
         userId:dbUser._id,
         balance:1+Math.random()*10000,
@@ -108,7 +110,9 @@ router.post("/signin",async (req,res)=>{
         password:body.password
     });
     if(user){
+       console.log(JWT_SECRET)
        const token=jwt.sign({userId:user._id},JWT_SECRET);
+       console.log(token);
        return res.status(200).json({
              token:token
     })

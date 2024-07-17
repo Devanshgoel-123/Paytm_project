@@ -9,27 +9,19 @@ connect();
 const userSchema=new Schema({
     username:{
         type:String,
-        required:true,
-        lowercase:true,
-        minLength:3,
-        maxLength:30
+        required:true
     },
     firstname:{
         type:String,
         required:true,
-        trim:true,
-        maxLength:30
     },
     password:{
         type:String,
         required:true,
-        minLength:6
     },
     lastname:{
         type:String,
         required:true,
-        trim:true,
-        maxLength:30
     }
 })
 const accountsSchema=new Schema({
