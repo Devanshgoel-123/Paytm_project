@@ -10,7 +10,11 @@ export const Users = () => {
     const [filter, setFilter] = useState("");
 
     useEffect(() => {
-        axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter)
+        axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter,{
+            headers:{
+                Authorization:localStorage.getItem('token')
+            }
+        })
             .then(response => {
                 setUsers(response.data.user)
             })
@@ -38,19 +42,19 @@ function User({user}) {
         <div className="flex">
             <div className="rounded-full h-12 w-12 bg-slate-200 flex justify-center mt-1 mr-2">
                 <div className="flex flex-col justify-center h-full text-xl">
-                    {user.firstName[0]}
+                  {(user.firstname).substring(0,1)}
                 </div>
             </div>
             <div className="flex flex-col justify-center h-ful">
                 <div>
-                    {user.firstName} {user.lastName}
+                    {user.firstname} {user.lastname}
                 </div>
             </div>
         </div>
 
         <div className="flex flex-col justify-center h-ful">
             <Button onClick={(e) => {
-                navigate("/send?id=" + user._id + "&name=" + user.firstName);
+                navigate("/send?id=" + user._id + "&name=" + user.firstname);
             }} label={"Send Money"} />
         </div>
     </div>

@@ -1,9 +1,10 @@
 const express=require("express");
 const {z} =require("zod");
-const {User,Account}=require("../db");
+const {Account}=require("../db")
+const {User}=require("../db");
 const jwt=require("jsonwebtoken");
 const router=express.Router();
-const {JWT_SECRET}=require("../config");
+const JWT_SECRET=require("../config");
 const {authMiddleware}=require("./middleware")
 
 
@@ -12,21 +13,22 @@ router.get("/bulk",authMiddleware,async(req,res)=>{
     try{
         const users=await User.find({ // This or thing is new for me, thus 
             $or: [{
-                firstName: {
+                firstname: {
                     "$regex": filter //Check if this substring is present in the name
                 }
             }, {
-                lastName: {
+                lastname: {
                     "$regex": filter
                 }
             }]
         });
+        console.log(users)
         if(users){
             res.json({ 
                 user: users.map(user => ({
                     username: user.username,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
                     _id: user._id
                 }))
             })
@@ -110,13 +112,11 @@ router.post("/signin",async (req,res)=>{
         password:body.password
     });
     if(user){
-       console.log(JWT_SECRET)
        const token=jwt.sign({userId:user._id},JWT_SECRET);
        console.log(token);
        return res.status(200).json({
              token:token
     })
-    return ;
     }
    res.status(411).json({
     message:"Error while logging in"
